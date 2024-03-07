@@ -9,7 +9,7 @@ module mcmc
     integer ipar, covexist, npar4DA
 
     real(8) :: fact_rejet
-    real(8) J_last(16), J_new(16), accept_rate, J_show_old, J_show_new, delta_scale
+    real(8) J_last(16), J_new(16), accept_rate, J_show_old, J_show_new, delta_scale, delta_scale_min, delta_scale_max
     integer new, reject
     logical do_cov2createNewPars, do_cov
     integer, allocatable :: mark_npar(:)
@@ -144,7 +144,9 @@ module mcmc
         mark4scale = 0
         init_scale = search_scale
         nonaccept  = 0
-        delta_scale = 0.05
+        delta_scale     = 0.1
+        delta_scale_min = 0.01
+        delta_scale_max = 1
         do iDAsimu = 1, nDAsimu
             ! write(*,*) iDAsimu, "/", nDAsimu, J_last, J_new, upgraded, accept_rate
             
@@ -224,14 +226,14 @@ module mcmc
                 ! ! nonaccept = nonaccept + 1
                 ! endif
                 if (accept_rate < 0.1) then 
-                    delta_scale = amax1(AMIN1(delta_scale*0.7, 0.1), 0.005) 
+                    delta_scale = amax1(AMIN1(delta_scale*0.7, delta_scale_max), delta_scale_min) 
                     if(do_cov2createNewPars) then
                         fact_rejet = amin1(amax1(fact_rejet*(1-0.3), 1.), 2.4)
                         print*, "changed fact_rejet < 0.1: ", fact_rejet
                     endif
                     print*, "chanaged delta_scale and fact_reject: ", delta_scale, fact_rejet
                 else
-                    delta_scale = amax1(AMIN1(delta_scale*1.3, 0.1), 0.005)
+                    delta_scale = amax1(AMIN1(delta_scale*1.3, delta_scale_max), delta_scale_min)
                     if(do_cov2createNewPars) then
                         fact_rejet = amin1(amax1(fact_rejet*(1.3), 1.), 2.4)
                         print*, "changed fact_rejet > 0.1: ", fact_rejet
