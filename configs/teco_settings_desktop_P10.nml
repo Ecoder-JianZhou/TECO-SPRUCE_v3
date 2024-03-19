@@ -1,9 +1,9 @@
 &nml_teco_settings
-    case_name     = "run_mcmc_P10"     ! define the case name
-    ! case_name   = "run_simu_P04-1"
+    ! case_name     = "run_mcmc_P10"     ! define the case name
+    case_name   = "run_simu_ctl_P10-1"
     ! case_name   = "run_sa_100"
-    do_simu     = False           ! simulation mode
-    do_mcmc     = True ! False           ! MCMC for data assimilation mode
+    do_simu     = True ! False           ! simulation mode
+    do_mcmc     = False           ! MCMC for data assimilation mode
     do_spinup   = False !True           ! spinup mode
     do_matrix   = False           ! whether run matrix or not
     do_restart  = False           ! whether read restart file or not
@@ -27,7 +27,7 @@
     watertablefile    = "watertablefile.txt"
     snowdepthfile     = "SPRUCE_Snow_Depth_2011-2014.txt"
     in_restartfile    = "restart.nc"
-    params_nml_file   = "parameters.nml"
+    params_nml_file   = "parameters_P06.nml"
 
     ! set the configure file for MCMC and SPIN-UP
     ! mcmc_configfile   = "mcmc_configs_1119.nml"

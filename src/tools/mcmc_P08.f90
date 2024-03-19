@@ -225,22 +225,22 @@ module mcmc
                 !     endif
                 ! ! nonaccept = nonaccept + 1
                 ! endif
-                if (iDAsimu>10) then
-                if (accept_rate < 0.1) then 
-                    delta_scale = amax1(AMIN1(delta_scale*0.7, delta_scale_max), delta_scale_min) 
-                    if(do_cov2createNewPars) then
-                        fact_rejet = amin1(amax1(fact_rejet*(1-0.3), 1.), 2.4)
-                        print*, "changed fact_rejet < 0.1: ", fact_rejet
-                    endif
-                    print*, "chanaged delta_scale and fact_reject: ", delta_scale, fact_rejet
-                else
-                    delta_scale = amax1(AMIN1(delta_scale*1.3, delta_scale_max), delta_scale_min)
-                    if(do_cov2createNewPars) then
-                        fact_rejet = amin1(amax1(fact_rejet*(1.3), 1.), 2.4)
-                        print*, "changed fact_rejet > 0.1: ", fact_rejet
-                    endif
-                endif
-            endif
+            ! if (iDAsimu>10) then
+            !     if (accept_rate < 0.1) then 
+            !         delta_scale = amax1(AMIN1(delta_scale*0.7, delta_scale_max), delta_scale_min) 
+            !         if(do_cov2createNewPars) then
+            !             fact_rejet = amin1(amax1(fact_rejet*(1-0.3), 1.), 2.4)
+            !             print*, "changed fact_rejet < 0.1: ", fact_rejet
+            !         endif
+            !         print*, "chanaged delta_scale and fact_reject: ", delta_scale, fact_rejet
+            !     else
+            !         delta_scale = amax1(AMIN1(delta_scale*1.3, delta_scale_max), delta_scale_min)
+            !         if(do_cov2createNewPars) then
+            !             fact_rejet = amin1(amax1(fact_rejet*(1.3), 1.), 2.4)
+            !             print*, "changed fact_rejet > 0.1: ", fact_rejet
+            !         endif
+            !     endif
+            ! endif
             endif
 
             ! updates of the covariance matrix
@@ -725,7 +725,7 @@ module mcmc
 
         ! ch4_h
         if(vars4MCMC%ch4_h%existOrNot)then
-            call CalculateCost(vars4MCMC%ch4_h%mdData(:,4)*100000, vars4MCMC%ch4_h%obsData(:,4)*100000,&
+            call CalculateCost(vars4MCMC%ch4_h%mdData(:,4)*10000000, vars4MCMC%ch4_h%obsData(:,4)*10000000,&
                  vars4MCMC%ch4_h%obsData(:,5), J_cost)
             J_new(13) = J_new(13) + J_cost*50!5
         endif
@@ -867,7 +867,7 @@ module mcmc
         !     upgraded = upgraded + 1
         !     J_last = J_new
         ! endif
-        delta_J_new = (sum(J_new(1:15)) - sum(J_last(1:15)))/15 * delta_scale!0.05
+        delta_J_new = (sum(J_new(1:15)) - sum(J_last(1:15)))!/15 * delta_scale!0.05
         ! if(AMIN1(1.0, exp(-sum(delta_J))) .gt. cs_rand)then
         if(AMIN1(1.0, exp(-delta_J_new)) .gt. cs_rand)then
         ! if(AMIN1(1.0, exp(-sum(delta_J(1:2)))) .gt. cs_rand)then

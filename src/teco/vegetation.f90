@@ -347,6 +347,7 @@ module vegetation
       Gswc2  = 0.0
       Tleaf1 = 0.0       !Leaf Temp
       Tleaf2 = 0.0 
+      sp%Aleaf(:) = 0.0
       wind   = iforcing%WS
       if(wind.lt.0.01) wind=0.01 
       raero  = 50./wind   ! aerodynamic resistance
@@ -440,6 +441,10 @@ module vegetation
 
          Acan1 = Acan1+fslt*Aleaf(1)*Gaussw(ng)*FLAIT*sp%stom_n    !amphi/hypostomatous
          Acan2 = Acan2+fshd*Aleaf(2)*Gaussw(ng)*FLAIT*sp%stom_n
+
+         sp%Aleaf(1) = sp%Aleaf(1) + Aleaf(1)*Gaussw(ng)/sum(Gaussw)
+         sp%Aleaf(2) = sp%Aleaf(2) + Aleaf(2)*Gaussw(ng)/sum(Gaussw)
+         sp%Aleaf(3) = sp%Aleaf(3) + Aleaf(1)*Gaussw(ng)/sum(Gaussw) + Aleaf(2)*Gaussw(ng)/sum(Gaussw)
 
          ! AcanL(ng)  = Acan1+Acan2
 

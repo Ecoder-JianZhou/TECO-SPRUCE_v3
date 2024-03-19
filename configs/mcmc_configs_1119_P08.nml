@@ -1,5 +1,5 @@
 &nml_mcmc_settings
-nDAsimu = 100
+nDAsimu = 20000
 search_scale = 0.02
 ncov = 50000
 nRand = 5
@@ -44,7 +44,7 @@ Tau_C = 4.775,    1.,        20.
 Tau_Micro = 0.1694,       0.05,      0.8
 Tau_SlowSOM = 27.88,   5.,        150.
 Tau_Passive = 810.3,   300.,      4000.
-Q10rh = 5.874,      1.,        10.
+Q10rh = 5.874,      1.,        8.
 etaW = 0.15,      0.15,      0.15
 f_F2M = 0.4645,      0.35,      0.6
 f_C2M = 0.2744,     0.25,      0.3

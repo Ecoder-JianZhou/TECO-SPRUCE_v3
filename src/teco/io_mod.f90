@@ -313,6 +313,8 @@ module io_mod
                 ! carbon fluxes (Kg C m-2 s-1)
                 outvars%sp(ipft)%gpp      = outvars%sp(ipft)%gpp     + &
                                                     st%sp(ipft)%gpp*convert_g2kg*convert_h2s/ntime
+                outvars%sp(ipft)%Aleaf(:) = outvars%sp(ipft)%Aleaf(:)     + &
+                                                    st%sp(ipft)%Aleaf(:)*convert_g2kg*convert_h2s/ntime *1000000
                 outvars%sp(ipft)%npp      = outvars%sp(ipft)%npp     + &
                                                     st%sp(ipft)%npp*convert_g2kg*convert_h2s/ntime
                 outvars%sp(ipft)%nppLeaf  = outvars%sp(ipft)%nppLeaf + &
@@ -487,6 +489,10 @@ module io_mod
             header_csv = adjustl(trim(header_csv))//"tran_"//adjustl(trim(sp_names(ipft)))//","
             ! other
             header_csv = adjustl(trim(header_csv))//"lai_"//adjustl(trim(sp_names(ipft)))//"," 
+            ! Aleaf
+            header_csv = adjustl(trim(header_csv))//"Aleaf_sun_"//adjustl(trim(sp_names(ipft)))//"," 
+            header_csv = adjustl(trim(header_csv))//"Aleaf_shd_"//adjustl(trim(sp_names(ipft)))//"," 
+            header_csv = adjustl(trim(header_csv))//"Aleaf_sum_"//adjustl(trim(sp_names(ipft)))//"," 
         enddo
         header_csv = adjustl(trim(header_csv))//"gpp,nee,npp,nppLeaf,nppStem,nppStem,nppRoot,nppOther,ra,&
             &raLeaf,raStem,raRoot,raOther,rMaint,rGrowth,rh,nbp,wetlandCH4,wetlandCH4prod,&
@@ -561,8 +567,9 @@ module io_mod
         character(len=2500) :: format_string
         
         ! write the date
-        nformat       = 25*npft+98 
+        nformat       = 28*npft+98 
         format_string = '((i4,",")(i3,",")(i2,",")' // repeat('(f15.4, ",")', nformat-1) // 'f15.4)'
+        ! print*,"test:", outVars%sp(1)%Aleaf(1)
         write(unit, adjustl(trim(format_string)))outVars%year, outVars%doy, outVars%hour, &
             (outVars%sp(ipft)%gpp,     outVars%sp(ipft)%nee,      outVars%sp(ipft)%npp,     &     
             outVars%sp(ipft)%nppLeaf,  outVars%sp(ipft)%nppStem,  outVars%sp(ipft)%nppStem, &
@@ -572,7 +579,8 @@ module io_mod
             outVars%sp(ipft)%nsc,      outVars%sp(ipft)%cLeaf,    outVars%sp(ipft)%cStem,   & 
             outVars%sp(ipft)%cRoot,    outVars%sp(ipft)%nLeaf,    outVars%sp(ipft)%nStem,   &  
             outVars%sp(ipft)%nRoot,    outVars%sp(ipft)%nsn,     outVars%sp(ipft)%tran,    & 
-            outVars%sp(ipft)%lai,      ipft = 1, npft),& 
+            outVars%sp(ipft)%lai,      outVars%sp(ipft)%Aleaf(1), outVars%sp(ipft)%Aleaf(2),&
+            outVars%sp(ipft)%Aleaf(3), ipft = 1, npft),& 
             outVars%gpp,     outVars%nee,        outVars%npp,            outVars%nppLeaf,  &        
             outVars%nppStem, outVars%nppStem,    outVars%nppRoot,        outVars%nppOther, &   
             outVars%ra,      outVars%raLeaf,     outVars%raStem,         outVars%raRoot,   &  

@@ -353,6 +353,7 @@ module driver
             ! if(iclim .eq. 1) print*, "beginning: ", st%cLit_m, st%nLit_m, st%nLit_m, st%nLit_s
             ! print*, st%sp(1)%pft_weight, st%sp(2)%pft_weight, st%sp(3)%pft_weight
             ! stop
+            ! print*,"test Aleaf: ",st%sp(1)%Aleaf
         enddo
 
         if(do_out_csv)then

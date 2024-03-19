@@ -225,20 +225,21 @@ module mcmc
                 !     endif
                 ! ! nonaccept = nonaccept + 1
                 ! endif
-                if (accept_rate < 0.1) then 
-                    delta_scale = amax1(AMIN1(delta_scale*0.7, delta_scale_max), delta_scale_min) 
-                    if(do_cov2createNewPars) then
-                        fact_rejet = amin1(amax1(fact_rejet*(1-0.3), 1.), 2.4)
-                        print*, "changed fact_rejet < 0.1: ", fact_rejet
-                    endif
-                    print*, "chanaged delta_scale and fact_reject: ", delta_scale, fact_rejet
-                else
-                    delta_scale = amax1(AMIN1(delta_scale*1.3, delta_scale_max), delta_scale_min)
-                    if(do_cov2createNewPars) then
-                        fact_rejet = amin1(amax1(fact_rejet*(1.3), 1.), 2.4)
-                        print*, "changed fact_rejet > 0.1: ", fact_rejet
-                    endif
-                endif
+
+                ! if (accept_rate < 0.1) then 
+                !     delta_scale = amax1(AMIN1(delta_scale*0.7, delta_scale_max), delta_scale_min) 
+                !     if(do_cov2createNewPars) then
+                !         fact_rejet = amin1(amax1(fact_rejet*(1-0.3), 1.), 2.4)
+                !         print*, "changed fact_rejet < 0.1: ", fact_rejet
+                !     endif
+                !     print*, "chanaged delta_scale and fact_reject: ", delta_scale, fact_rejet
+                ! else
+                !     delta_scale = amax1(AMIN1(delta_scale*1.3, delta_scale_max), delta_scale_min)
+                !     if(do_cov2createNewPars) then
+                !         fact_rejet = amin1(amax1(fact_rejet*(1.3), 1.), 2.4)
+                !         print*, "changed fact_rejet > 0.1: ", fact_rejet
+                !     endif
+                ! endif
             endif
 
             ! updates of the covariance matrix
@@ -865,7 +866,7 @@ module mcmc
         !     upgraded = upgraded + 1
         !     J_last = J_new
         ! endif
-        delta_J_new = (sum(J_new(1:15)) - sum(J_last(1:15)))/15 * delta_scale!0.05
+        delta_J_new = (sum(J_new(1:15)) - sum(J_last(1:15)))!/15 * delta_scale!0.05
         ! if(AMIN1(1.0, exp(-sum(delta_J))) .gt. cs_rand)then
         if(AMIN1(1.0, exp(-delta_J_new)) .gt. cs_rand)then
         ! if(AMIN1(1.0, exp(-sum(delta_J(1:2)))) .gt. cs_rand)then

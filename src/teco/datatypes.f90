@@ -186,6 +186,7 @@ module datatypes
         real(8) :: outN_L, outN_W, outN_R
         real(8) :: RmLeaf, RmStem, RmRoot, Rmain, Rauto ! respiration
         real(8) :: RgLeaf, RgStem, RgRoot, Rgrowth
+        real(8) :: Aleaf(3)                             !Jian: sunlit, shadlit, sum
         ! carbon and nitrogen states
         real(8) :: cPlant, nPlant
         real(8) :: CN_L,   CN_W,   CN_R                ! above still has the values of CN0: CN0_L, CN0_W, CN0_R
@@ -372,6 +373,7 @@ module datatypes
     type spec_outvars_type
         ! carbon fluxes (Kg C m-2 s-1)
         real(8) :: gpp
+        real(8) :: Aleaf(3)
         real(8) :: nee
         real(8) :: npp
         real(8) :: nppLeaf
@@ -1243,6 +1245,7 @@ module datatypes
         type(spec_outvars_type), intent(inout) :: spec_outVars
         ! carbon fluxes (Kg C m-2 s-1)
         spec_outVars%gpp      = 0.
+        spec_outVars%Aleaf(:)    = 0.
         spec_outVars%nee      = 0.
         spec_outVars%npp      = 0.
         spec_outVars%nppLeaf  = 0.
