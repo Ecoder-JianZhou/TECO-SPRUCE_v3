@@ -34,6 +34,9 @@ obsfile_CN_shag_d = "observation_files/obsfile_CN_shag_d.txt"
 obsfile_photo_shrub_d = "observation_files/obsfile_photo_shrub_d.txt"
 obsfile_photo_tree_d = "observation_files/obsfile_photo_tree_d.txt"
 obsfile_watertable_h = "observation_files/obsfile_watertable_h.txt"
+obsfile_LAI_tree_d = "observation_files/obsfile_LAI_tree_d.txt"
+obsfile_LAI_shrub_d = "observation_files/obsfile_LAI_shrub_d.txt"
+obsfile_photo_tree_h = "observation_files/obsfile_photo_tree_h.txt"
 /
 &nml_site_params
 wsmax = 85.13,      70.3,      95.3

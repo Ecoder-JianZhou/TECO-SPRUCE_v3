@@ -133,6 +133,10 @@ module mcmc_mod
     character(500) :: obsfile_CN_shag_d 
     character(500) :: obsfile_photo_shrub_d 
     character(500) :: obsfile_photo_tree_d  
+    !
+    character(500) :: obsfile_LAI_tree_d 
+    character(500) :: obsfile_LAI_shrub_d 
+    character(500) :: obsfile_photo_tree_h 
 
     ! variables for calculating the cost in MCMC processes
     type interCostVariable
@@ -174,6 +178,10 @@ module mcmc_mod
         type(interCostVariable) :: photo_shrub_d 
         type(interCostVariable) :: photo_tree_d 
         type(interCostVariable) :: zwt_h
+        !
+        type(interCostVariable) :: lai_tree_d 
+        type(interCostVariable) :: lai_shrub_d 
+        type(interCostVariable) :: photo_tree_h
     end type allCostVariables
 
     type(allCostVariables) :: vars4MCMC      ! define a allCostVariables first
@@ -333,6 +341,10 @@ module mcmc_mod
 
         vars4MCMC%zwt_h%mc_itime  = 1
 
+        vars4MCMC%lai_shrub_d%mc_itime  = 1
+        vars4MCMC%lai_tree_d%mc_itime   = 1
+        vars4MCMC%photo_tree_h%mc_itime = 1
+
         mc_iyear = 1
         mc_iday  = 1
         mc_ihour = 1
@@ -352,7 +364,8 @@ module mcmc_mod
             obsfile_nee_h, obsfile_LAI_d, obsfile_rh_y, obsfile_leaf_mass_shrub_y, obsfile_stem_mass_shrub_y, &
             obsfile_leaf_resp_shrub_d, obsfile_leaf_resp_tree_d, obsfile_ch4_d, obsfile_ch4_h, obsfile_ch4_y, & 
             obsfile_CN_shag_d, obsfile_photo_shrub_d, obsfile_photo_tree_d, &
-            obsfile_cPlant_tree_y, obsfile_cSoil_y, obsfile_cPlant_sphag_y, obsfile_watertable_h 
+            obsfile_cPlant_tree_y, obsfile_cSoil_y, obsfile_cPlant_sphag_y, obsfile_watertable_h, &
+            obsfile_LAI_shrub_d, obsfile_LAI_tree_d, obsfile_photo_tree_h
 
         ! character(50) :: parname_1,  parname_2,  parname_3,  parname_4,  parname_5,  parname_6
         ! character(50) :: parname_7,  parname_8,  parname_9,  parname_10, parname_11, parname_12
@@ -633,6 +646,10 @@ module mcmc_mod
         vars4MCMC%photo_tree_d%filepath = adjustl(trim(inDir))//"/"//adjustl(trim(obsfile_photo_tree_d))
         !
         vars4MCMC%zwt_h%filepath = adjustl(trim(inDir))//"/"//adjustl(trim(obsfile_watertable_h))
+        !
+        vars4MCMC%lai_shrub_d%filepath = adjustl(trim(inDir))//"/"//adjustl(trim(obsfile_LAI_shrub_d))
+        vars4MCMC%lai_tree_d%filepath = adjustl(trim(inDir))//"/"//adjustl(trim(obsfile_LAI_tree_d))
+        vars4MCMC%photo_tree_h%filepath = adjustl(trim(inDir))//"/"//adjustl(trim(obsfile_photo_tree_h))
     end subroutine readMCMC_configs_NML
 
     subroutine update_mc_tile_params(in_mc_par, parname, parval, parmin, parmax)
@@ -678,6 +695,10 @@ module mcmc_mod
         call readObsData_var(vars4MCMC%photo_tree_d) 
         !
         call readObsData_var(vars4MCMC%zwt_h)
+        !
+        call readObsData_var(vars4MCMC%lai_shrub_d)
+        call readObsData_var(vars4MCMC%lai_tree_d)
+        call readObsData_var(vars4MCMC%photo_tree_h)
     end subroutine readObsData
 
     subroutine readObsData_var(var_obsData)
@@ -1618,6 +1639,10 @@ module mcmc_mod
         call GetSimuData_var(vars4MCMC%photo_tree_d,  outVars_d%sp(1)%gpp*24) 
 
         call GetSimuData_var(vars4MCMC%zwt_h,  outVars_h%wtd) 
+
+        call GetSimuData_var(vars4MCMC%lai_shrub_d,  outVars_d%sp(2)%lai) 
+        call GetSimuData_var(vars4MCMC%lai_tree_d,  outVars_d%sp(1)%lai) 
+        call GetSimuData_var(vars4MCMC%photo_tree_h,  outVars_h%sp(1)%Aleaf) 
 
     end subroutine GetSimuData
 

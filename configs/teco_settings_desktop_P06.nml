@@ -1,9 +1,9 @@
 &nml_teco_settings
-    ! case_name     = "run_mcmc_P06"     ! define the case name
-    case_name   = "run_simu_ctl_P06-1"
+    case_name     = "run_mcmc_P06"     ! define the case name
+    ! case_name   = "run_simu_ctl_P06-1"
     ! case_name   = "run_sa_100"
-    do_simu     = True ! False           ! simulation mode
-    do_mcmc     = False           ! MCMC for data assimilation mode
+    do_simu     = False           ! simulation mode
+    do_mcmc     = True ! False           ! MCMC for data assimilation mode
     do_spinup   = False !True           ! spinup mode
     do_matrix   = False           ! whether run matrix or not
     do_restart  = False           ! whether read restart file or not

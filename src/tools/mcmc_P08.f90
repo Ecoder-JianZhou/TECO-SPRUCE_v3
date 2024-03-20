@@ -9,7 +9,7 @@ module mcmc
     integer ipar, covexist, npar4DA
 
     real(8) :: fact_rejet
-    real(8) J_last(16), J_new(16), accept_rate, J_show_old, J_show_new, delta_scale, delta_scale_min, delta_scale_max
+    real(8) J_last(20), J_new(20), accept_rate, J_show_old, J_show_new, delta_scale, delta_scale_min, delta_scale_max
     integer new, reject
     logical do_cov2createNewPars, do_cov
     integer, allocatable :: mark_npar(:)
@@ -630,8 +630,8 @@ module mcmc
 
     subroutine costFuncObs_old()
         implicit none
-        real(8) J_cost, delta_J(16), cs_rand, delta_J_new
-        integer :: ipft, iaccep(16), i, iupdata, nupdata, iiii
+        real(8) J_cost, delta_J(20), cs_rand, delta_J_new
+        integer :: ipft, iaccep(20), i, iupdata, nupdata, iiii
         
         J_new = 0
         nupdata = 12
@@ -756,6 +756,36 @@ module mcmc
             J_new(16) = J_new(16) + J_cost
         endif
 
+
+        ! LAI_shrub_d        
+        if(vars4MCMC%lai_shrub_d%existOrNot)then
+            call CalculateCost(vars4MCMC%lai_shrub_d%mdData(:,4), vars4MCMC%lai_shrub_d%obsData(:,4),&
+                 vars4MCMC%lai_shrub_d%obsData(:,5), J_cost)
+            J_new(17) = J_new(17) + J_cost
+        endif
+
+        ! LAI_tree_d        
+        if(vars4MCMC%lai_tree_d%existOrNot)then
+            call CalculateCost(vars4MCMC%lai_tree_d%mdData(:,4), vars4MCMC%lai_tree_d%obsData(:,4),&
+                 vars4MCMC%lai_tree_d%obsData(:,5), J_cost)
+            J_new(18) = J_new(18) + J_cost
+        endif
+
+        ! photo_tree_h       
+        if(vars4MCMC%photo_tree_h%existOrNot)then
+            call CalculateCost(vars4MCMC%photo_tree_h%mdData(:,4), vars4MCMC%photo_tree_h%obsData(:,4),&
+                 vars4MCMC%photo_tree_h%obsData(:,5), J_cost)
+            J_new(19) = J_new(19) + J_cost
+        endif
+
+        ! photo_shrub_d        
+        if(vars4MCMC%photo_shrub_d%existOrNot)then
+            call CalculateCost(vars4MCMC%photo_shrub_d%mdData(:,4), vars4MCMC%photo_shrub_d%obsData(:,4),&
+                 vars4MCMC%photo_shrub_d%obsData(:,5), J_cost)
+            J_new(20) = J_new(20) + J_cost
+        endif
+
+
         ! =====================================================================================
 
         
@@ -835,7 +865,7 @@ module mcmc
         ! ! write(*,*) "here2",J_new
         iaccep = 0
         nupdata = 12 
-        do i = 1,16
+        do i = 1,20
             ! if (iDAsimu .eq. i*nDAsimu/nupdata+1) then
             !    if(i<12) J_last(i+1) = J_new(i+1)
             ! endif
