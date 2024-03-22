@@ -43,13 +43,14 @@ def write_nml_file(file_path, data):
 
 def run_params4nml(file_params, org_data, file_path):
     # read the parameter file 
-    df_dat = pd.read_csv(file_params).loc[0,:]
+    df_dat = pd.read_csv(file_params).iloc[1]
 
     df_dict = {}
 
     for idx in df_dat.index:
         if idx.split("_")[-1].rstrip() in ["Tree", "Shrub", "Sphagnum"]:
             item,_,_ = idx.rpartition('_')
+            if item == "SLA": item = "SLAx"
             if item in df_dict.keys():
                 df_dict[item] = df_dict[item] + ", " + str(df_dat[idx])
             else:
@@ -77,12 +78,12 @@ data = parse_nml_lines(lines)
 
 # read the optimized parameters values 
 param_path = "/mnt/d/3_case_SPRUCE_data_analysis/2_TECO-SPRUCE_data_assimilation/5_TECO-SPRUCE_v3_DA/0_bak_data/2_outputs/outputs_0129_m_2/run_mcmc_"
-out_path   = "/mnt/d/3_case_SPRUCE_data_analysis/2_TECO-SPRUCE_data_assimilation/5_TECO-SPRUCE_v3_DA/2_create_parameters/1_parameters_20240306/"
+# out_path   = "/mnt/d/3_case_SPRUCE_data_analysis/2_TECO-SPRUCE_data_assimilation/5_TECO-SPRUCE_v3_DA/2_create_parameters/1_parameters_20240306/"
 file_params = ""
 
 # each plot
 for idx_plot, iplot in enumerate(ls_plots):
     print(iplot)
-    file_params = param_path + iplot + "/results_mcmc/sel_parameter_sets.csv"
+    file_params = param_path + iplot + "/results_mcmc/total_parameter_sets.csv"
     file_path   = "configs/parameters_"+iplot+".nml"
     run_params4nml(file_params, data, file_path)

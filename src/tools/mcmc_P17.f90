@@ -151,7 +151,7 @@ module mcmc
             ! write(*,*) iDAsimu, "/", nDAsimu, J_last, J_new, upgraded, accept_rate
             
             write(*,*) iDAsimu, "/", nDAsimu,  J_show_old, J_show_new, upgraded, accept_rate
-            ! do ishow = 1, 16
+            ! do ishow = 1, 20
             !     write(*,*) iDAsimu, "/", nDAsimu, upgraded, ishow, J_last(ishow), J_new(ishow), J_last(ishow) - J_new(ishow)
             ! enddo
     !         write(*,*) iDAsimu, "/", nDAsimu, J_last(1),"/", J_new(1),";", J_last(2),"/", J_new(2),";",&
@@ -759,28 +759,28 @@ module mcmc
         if(vars4MCMC%lai_shrub_d%existOrNot)then
             call CalculateCost(vars4MCMC%lai_shrub_d%mdData(:,4), vars4MCMC%lai_shrub_d%obsData(:,4),&
                  vars4MCMC%lai_shrub_d%obsData(:,5), J_cost)
-            J_new(17) = J_new(17) + J_cost
+            J_new(17) = J_new(17) + J_cost*500
         endif
 
         ! LAI_tree_d        
         if(vars4MCMC%lai_tree_d%existOrNot)then
             call CalculateCost(vars4MCMC%lai_tree_d%mdData(:,4), vars4MCMC%lai_tree_d%obsData(:,4),&
                  vars4MCMC%lai_tree_d%obsData(:,5), J_cost)
-            J_new(18) = J_new(18) + J_cost
+            J_new(18) = J_new(18) + J_cost*500
         endif
 
         ! photo_tree_h       
         if(vars4MCMC%photo_tree_h%existOrNot)then
             call CalculateCost(vars4MCMC%photo_tree_h%mdData(:,4), vars4MCMC%photo_tree_h%obsData(:,4),&
                  vars4MCMC%photo_tree_h%obsData(:,5), J_cost)
-            J_new(19) = J_new(19) + J_cost
+            J_new(19) = J_new(19) + J_cost*100
         endif
 
         ! photo_shrub_d        
         if(vars4MCMC%photo_shrub_d%existOrNot)then
             call CalculateCost(vars4MCMC%photo_shrub_d%mdData(:,4), vars4MCMC%photo_shrub_d%obsData(:,4),&
                  vars4MCMC%photo_shrub_d%obsData(:,5), J_cost)
-            J_new(20) = J_new(20) + J_cost
+            J_new(20) = J_new(20) + 0!J_cost
         endif
         ! =====================================================================================
 

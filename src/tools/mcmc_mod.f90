@@ -921,11 +921,11 @@ module mcmc_mod
                 endif
 
                 if(adjustl(trim(mc_params%sp(ipft)%sp_params(imc_params)%parname)) .eq. "SapR") then 
-                    in_params_vals%sp_params(ipft)%SapS   = mc_params%sp(ipft)%sp_params(imc_params)%parval
+                    in_params_vals%sp_params(ipft)%SapR   = mc_params%sp(ipft)%sp_params(imc_params)%parval
                 endif
 
                 if(adjustl(trim(mc_params%sp(ipft)%sp_params(imc_params)%parname)) .eq. "SLA") then   
-                    in_params_vals%sp_params(ipft)%SapS   = mc_params%sp(ipft)%sp_params(imc_params)%parval
+                    in_params_vals%sp_params(ipft)%SLA   = mc_params%sp(ipft)%sp_params(imc_params)%parval
                 endif
 
                 if(adjustl(trim(mc_params%sp(ipft)%sp_params(imc_params)%parname)) .eq. "GLmax")  then 
@@ -1642,7 +1642,7 @@ module mcmc_mod
 
         call GetSimuData_var(vars4MCMC%lai_shrub_d,  outVars_d%sp(2)%lai) 
         call GetSimuData_var(vars4MCMC%lai_tree_d,  outVars_d%sp(1)%lai) 
-        call GetSimuData_var(vars4MCMC%photo_tree_h,  outVars_h%sp(1)%Aleaf) 
+        call GetSimuData_var(vars4MCMC%photo_tree_h, outVars_h%sp(1)%Aleaf(1)) 
 
     end subroutine GetSimuData
 

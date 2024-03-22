@@ -27,7 +27,7 @@
     watertablefile    = "watertablefile.txt"
     snowdepthfile     = "SPRUCE_Snow_Depth_2011-2014.txt"
     in_restartfile    = "restart.nc"
-    params_nml_file   = "parameters_P06.nml"
+    params_nml_file   = "parameters_P08.nml"
 
     ! set the configure file for MCMC and SPIN-UP
     ! mcmc_configfile   = "mcmc_configs_1119.nml"
