@@ -673,7 +673,7 @@ module mcmc
 
         ! BNPP_y  ! tree + shrub
         if(vars4MCMC%BNPP_y%existOrNot)then
-            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4)*0.8,&
+            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4)*1.8,&
                  vars4MCMC%BNPP_y%obsData(:,5), J_cost)
             J_new(6) = J_new(6) + J_cost*2000
         endif

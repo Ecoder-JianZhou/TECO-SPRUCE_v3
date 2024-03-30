@@ -1617,8 +1617,11 @@ module mcmc_mod
 
         call GetSimuData_var(vars4MCMC%rh_y,       outVars_y%rh*24*365)         ! tree  + Shrub
         
-        call GetSimuData_var(vars4MCMC%leaf_mass_shrub_y, in_st%sp(2)%pft_weight*outVars_y%sp(2)%cleaf)
-        call GetSimuData_var(vars4MCMC%stem_mass_shrub_y, in_st%sp(2)%pft_weight*outVars_y%sp(2)%cStem)
+        ! call GetSimuData_var(vars4MCMC%leaf_mass_shrub_y, in_st%sp(2)%pft_weight*outVars_y%sp(2)%cleaf)
+        ! call GetSimuData_var(vars4MCMC%stem_mass_shrub_y, in_st%sp(2)%pft_weight*outVars_y%sp(2)%cStem)
+
+        call GetSimuData_var(vars4MCMC%leaf_mass_shrub_y, in_st%sp(2)%pft_weight*outVars_d%sp(2)%cleaf)
+        call GetSimuData_var(vars4MCMC%stem_mass_shrub_y, in_st%sp(2)%pft_weight*outVars_d%sp(2)%cStem)
 
         call GetSimuData_var(vars4MCMC%cPlant_tree_y, in_st%sp(1)%pft_weight*(outVars_d%sp(1)%cLeaf+outVars_d%sp(1)%cStem))
         call GetSimuData_var(vars4MCMC%cPlant_sphag_y, &
