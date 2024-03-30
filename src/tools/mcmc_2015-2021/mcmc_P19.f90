@@ -132,7 +132,7 @@ module mcmc
     subroutine run_mcmc(st)
         implicit none
         type(site_data_type), intent(inout) :: st
-        integer temp_upgraded, ipft, mark4scale, ishow, i, nonaccept
+        integer temp_upgraded, ipft, mark4scale, ishow, nonaccept
         real(8) rand, init_scale, rand_scale
         
         print *, "# Start to run mcmc ..."
@@ -156,7 +156,7 @@ module mcmc
             ! enddo
     !         write(*,*) iDAsimu, "/", nDAsimu, J_last(1),"/", J_new(1),";", J_last(2),"/", J_new(2),";",&
     ! & J_last(3),"/", J_new(3),";", J_last(4),"/", J_new(4),";", J_last(5),"/", J_new(5),";",upgraded, accept_rate
-            call mcmc_functions_init()  ! initialize the mc_itime ... variablesc
+            call mcmc_functions_init()  ! initialize the mc_itime ... variables
                 
             ! print*,"before:", mc_DApar%DApar
             ! generate parameters 
@@ -372,7 +372,7 @@ module mcmc
 
         ! BNPP_y  ! tree + shrub
         if(vars4MCMC%BNPP_y%existOrNot)then
-            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4),&
+            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4)*1.5,&
                  vars4MCMC%BNPP_y%obsData(:,5), J_cost)
             J_new(6) = J_new(6) + J_cost*100
         endif
@@ -638,14 +638,14 @@ module mcmc
         if(vars4MCMC%cPlant_tree_y%existOrNot)then
             call CalculateCost(vars4MCMC%cPlant_tree_y%mdData(:,4), vars4MCMC%cPlant_tree_y%obsData(:,4),&
                  vars4MCMC%cPlant_tree_y%obsData(:,5), J_cost)
-            J_new(1) = J_new(1) + J_cost*10000
+            J_new(1) = J_new(1) + J_cost*20000
         endif
 
         ! ! ANPP_Tree_y
         if(vars4MCMC%ANPP_Tree_y%existOrNot)then
             call CalculateCost(vars4MCMC%ANPP_Tree_y%mdData(:,4), vars4MCMC%ANPP_Tree_y%obsData(:,4),&
                  vars4MCMC%ANPP_Tree_y%obsData(:,5), J_cost)
-            J_new(2) = J_new(2) + J_cost*100
+            J_new(2) = J_new(2) + J_cost*20000
         endif
 
         ! leaf_mass_shrub_y
@@ -667,12 +667,12 @@ module mcmc
         if(vars4MCMC%ANPP_Shrub_y%existOrNot)then
             call CalculateCost(vars4MCMC%ANPP_Shrub_y%mdData(:,4), vars4MCMC%ANPP_Shrub_y%obsData(:,4),&
                  vars4MCMC%ANPP_Shrub_y%obsData(:,5), J_cost)
-            J_new(5) = J_new(5) + J_cost*500 ! test *10 to better constrain
+            J_new(5) = J_new(5) + J_cost*10000 ! test *10 to better constrain
         endif
 
         ! BNPP_y  ! tree + shrub
         if(vars4MCMC%BNPP_y%existOrNot)then
-            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4)*0.8,&
+            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4)*1.5,&
                  vars4MCMC%BNPP_y%obsData(:,5), J_cost)
             J_new(6) = J_new(6) + J_cost*2000
         endif
@@ -688,7 +688,7 @@ module mcmc
         if(vars4MCMC%NPP_sphag_y%existOrNot)then
             call CalculateCost(vars4MCMC%NPP_sphag_y%mdData(:,4), vars4MCMC%NPP_sphag_y%obsData(:,4),&
                  vars4MCMC%NPP_sphag_y%obsData(:,5), J_cost)
-            J_new(8) = J_new(8) + J_cost*100
+            J_new(8) = J_new(8) + J_cost*5000
         endif  
         ! print*, vars4MCMC%NPP_sphag_y%mdData(:,4), vars4MCMC%NPP_sphag_y%obsData(:,4)
         ! print*, J_new(8), J_last(8)
@@ -697,7 +697,7 @@ module mcmc
         if(vars4MCMC%gpp_d%existOrNot)then
             call CalculateCost(vars4MCMC%gpp_d%mdData(:,4), vars4MCMC%gpp_d%obsData(:,4),&
                  vars4MCMC%gpp_d%obsData(:,5), J_cost)
-            J_new(9) = J_new(9) + J_cost*50000
+            J_new(9) = J_new(9) + J_cost*50000!10000
         endif
         ! print*, vars4MCMC%gpp_d%mdData(:,4), vars4MCMC%gpp_d%obsData(:,4)
         ! print*,"after:", J_new
@@ -718,26 +718,26 @@ module mcmc
         if(vars4MCMC%cSoil_y%existOrNot)then
             call CalculateCost(vars4MCMC%cSoil_y%mdData(:,4), vars4MCMC%cSoil_y%obsData(:,4),&
                  vars4MCMC%cSoil_y%obsData(:,5), J_cost)
-            J_new(12) = J_new(12) + J_cost*5000
+            J_new(12) = J_new(12) + J_cost*1000
         endif
 
         ! ch4_h
         if(vars4MCMC%ch4_h%existOrNot)then
-            call CalculateCost(vars4MCMC%ch4_h%mdData(:,4)*1000000, vars4MCMC%ch4_h%obsData(:,4)*1000000*300,&
+            call CalculateCost(vars4MCMC%ch4_h%mdData(:,4)*1000000, vars4MCMC%ch4_h%obsData(:,4)*1000000,&
                  vars4MCMC%ch4_h%obsData(:,5), J_cost)
-            J_new(13) = J_new(13) + J_cost*100
+            J_new(13) = J_new(13) + J_cost*5
         endif
 
         if(vars4MCMC%rh_y%existOrNot)then
             call CalculateCost(vars4MCMC%rh_y%mdData(:,4), vars4MCMC%rh_y%obsData(:,4),&
                  vars4MCMC%rh_y%obsData(:,5), J_cost)
-            J_new(14) = J_new(14) + J_cost*10000
+            J_new(14) = J_new(14) + J_cost*3000
         endif
 
         if(vars4MCMC%ch4_y%existOrNot)then
             call CalculateCost(vars4MCMC%ch4_y%mdData(:,4), vars4MCMC%ch4_y%obsData(:,4),&
                  vars4MCMC%ch4_y%obsData(:,5), J_cost)
-            J_new(15) = J_new(15) + J_cost*1000
+            J_new(15) = J_new(15) + J_cost*100
         endif
 
         ! water table
@@ -759,21 +759,21 @@ module mcmc
         if(vars4MCMC%lai_shrub_d%existOrNot)then
             call CalculateCost(vars4MCMC%lai_shrub_d%mdData(:,4), vars4MCMC%lai_shrub_d%obsData(:,4),&
                  vars4MCMC%lai_shrub_d%obsData(:,5), J_cost)
-            J_new(17) = J_new(17) + J_cost*500
+            J_new(17) = J_new(17) + J_cost*50
         endif
 
         ! LAI_tree_d        
         if(vars4MCMC%lai_tree_d%existOrNot)then
             call CalculateCost(vars4MCMC%lai_tree_d%mdData(:,4), vars4MCMC%lai_tree_d%obsData(:,4),&
                  vars4MCMC%lai_tree_d%obsData(:,5), J_cost)
-            J_new(18) = J_new(18) + J_cost*500
+            J_new(18) = J_new(18) + J_cost*100
         endif
 
         ! photo_tree_h       
         if(vars4MCMC%photo_tree_h%existOrNot)then
             call CalculateCost(vars4MCMC%photo_tree_h%mdData(:,4), vars4MCMC%photo_tree_h%obsData(:,4),&
                  vars4MCMC%photo_tree_h%obsData(:,5), J_cost)
-            J_new(19) = J_new(19) + J_cost*100
+            J_new(19) = J_new(19) + J_cost*500
         endif
 
         ! photo_shrub_d        

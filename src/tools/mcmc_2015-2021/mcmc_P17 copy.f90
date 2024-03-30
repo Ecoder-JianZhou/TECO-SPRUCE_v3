@@ -9,7 +9,7 @@ module mcmc
     integer ipar, covexist, npar4DA
 
     real(8) :: fact_rejet
-    real(8) J_last(20), J_new(20), accept_rate, J_show_old, J_show_new, delta_scale, delta_scale_min, delta_scale_max
+    real(8) J_last(20), J_new(20), accept_rate, J_show_old, J_show_new
     integer new, reject
     logical do_cov2createNewPars, do_cov
     integer, allocatable :: mark_npar(:)
@@ -132,7 +132,7 @@ module mcmc
     subroutine run_mcmc(st)
         implicit none
         type(site_data_type), intent(inout) :: st
-        integer temp_upgraded, ipft, mark4scale, ishow, i, nonaccept
+        integer temp_upgraded, ipft, mark4scale, ishow
         real(8) rand, init_scale, rand_scale
         
         print *, "# Start to run mcmc ..."
@@ -143,20 +143,16 @@ module mcmc
         new = 0
         mark4scale = 0
         init_scale = search_scale
-        nonaccept  = 0
-        delta_scale = 0.1
-        delta_scale_min = 0.01
-        delta_scale_max = 1
         do iDAsimu = 1, nDAsimu
             ! write(*,*) iDAsimu, "/", nDAsimu, J_last, J_new, upgraded, accept_rate
             
             write(*,*) iDAsimu, "/", nDAsimu,  J_show_old, J_show_new, upgraded, accept_rate
-            ! do ishow = 1, 20
+            ! do ishow = 1, 16
             !     write(*,*) iDAsimu, "/", nDAsimu, upgraded, ishow, J_last(ishow), J_new(ishow), J_last(ishow) - J_new(ishow)
             ! enddo
     !         write(*,*) iDAsimu, "/", nDAsimu, J_last(1),"/", J_new(1),";", J_last(2),"/", J_new(2),";",&
     ! & J_last(3),"/", J_new(3),";", J_last(4),"/", J_new(4),";", J_last(5),"/", J_new(5),";",upgraded, accept_rate
-            call mcmc_functions_init()  ! initialize the mc_itime ... variablesc
+            call mcmc_functions_init()  ! initialize the mc_itime ... variables
                 
             ! print*,"before:", mc_DApar%DApar
             ! generate parameters 
@@ -207,37 +203,12 @@ module mcmc
                 ! enddo
                 mark4scale = 0
                 search_scale = init_scale
-                nonaccept = 0
             else
                 reject = reject + 1
                 mark4scale = mark4scale + 1
-                ! if(.not. do_cov2createNewPars)then
-                !     if (mark4scale > 20) then 
-                !         if (nonaccept < 20) then
-                !             ! call random_number(rand_scale)
-                !             ! search_scale = max(search_scale, min(rand_scale, 0.5))
-                !             search_scale = AMIN1(search_scale*1.1, 0.5)
-                !             print*, "increase search scale: ", search_scale
-                !             nonaccept = nonaccept + 1
-                !         ! else:
-                !             mark4scale = 0
-                !         endif
-                !     endif
-                ! ! nonaccept = nonaccept + 1
-                ! endif
-                ! if (accept_rate < 0.1) then 
-                !     delta_scale = amax1(AMIN1(delta_scale*0.7, delta_scale_max), delta_scale_min) 
-                !     if(do_cov2createNewPars) then
-                !         fact_rejet = amin1(amax1(fact_rejet*(1-0.3), 1.), 2.4)
-                !         print*, "changed fact_rejet < 0.1: ", fact_rejet
-                !     endif
-                !     print*, "chanaged delta_scale and fact_reject: ", delta_scale, fact_rejet
-                ! else
-                !     delta_scale = amax1(AMIN1(delta_scale*1.3, delta_scale_max), delta_scale_min)
-                !     if(do_cov2createNewPars) then
-                !         fact_rejet = amin1(amax1(fact_rejet*(1.3), 1.), 2.4)
-                !         print*, "changed fact_rejet > 0.1: ", fact_rejet
-                !     endif
+                ! if (mark4scale > 50) then 
+                !     call random_number(rand_scale)
+                !     search_scale = max(search_scale, min(rand_scale, 0.5))
                 ! endif
             endif
 
@@ -653,7 +624,7 @@ module mcmc
             call CalculateCost(vars4MCMC%leaf_mass_shrub_y%mdData(:,4), vars4MCMC%leaf_mass_shrub_y%obsData(:,4),&
                  vars4MCMC%leaf_mass_shrub_y%obsData(:,5), J_cost)
             ! print*, vars4MCMC%leaf_mass_shrub_y%mdData(:,4), vars4MCMC%leaf_mass_shrub_y%obsData(:,4)
-            J_new(3) = J_new(3) + J_cost*10000
+            J_new(3) = J_new(3) + J_cost*1000
         endif
 
         ! stem_mass_shrub_y
@@ -667,12 +638,12 @@ module mcmc
         if(vars4MCMC%ANPP_Shrub_y%existOrNot)then
             call CalculateCost(vars4MCMC%ANPP_Shrub_y%mdData(:,4), vars4MCMC%ANPP_Shrub_y%obsData(:,4),&
                  vars4MCMC%ANPP_Shrub_y%obsData(:,5), J_cost)
-            J_new(5) = J_new(5) + J_cost*500 ! test *10 to better constrain
+            J_new(5) = J_new(5) + J_cost*100 ! test *10 to better constrain
         endif
 
         ! BNPP_y  ! tree + shrub
         if(vars4MCMC%BNPP_y%existOrNot)then
-            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4)*0.8,&
+            call CalculateCost(vars4MCMC%BNPP_y%mdData(:,4), vars4MCMC%BNPP_y%obsData(:,4)*1.2,&
                  vars4MCMC%BNPP_y%obsData(:,5), J_cost)
             J_new(6) = J_new(6) + J_cost*2000
         endif
@@ -697,7 +668,7 @@ module mcmc
         if(vars4MCMC%gpp_d%existOrNot)then
             call CalculateCost(vars4MCMC%gpp_d%mdData(:,4), vars4MCMC%gpp_d%obsData(:,4),&
                  vars4MCMC%gpp_d%obsData(:,5), J_cost)
-            J_new(9) = J_new(9) + J_cost*50000
+            J_new(9) = J_new(9) + J_cost*5000
         endif
         ! print*, vars4MCMC%gpp_d%mdData(:,4), vars4MCMC%gpp_d%obsData(:,4)
         ! print*,"after:", J_new
@@ -718,14 +689,14 @@ module mcmc
         if(vars4MCMC%cSoil_y%existOrNot)then
             call CalculateCost(vars4MCMC%cSoil_y%mdData(:,4), vars4MCMC%cSoil_y%obsData(:,4),&
                  vars4MCMC%cSoil_y%obsData(:,5), J_cost)
-            J_new(12) = J_new(12) + J_cost*5000
+            J_new(12) = J_new(12) + J_cost*1000
         endif
 
         ! ch4_h
         if(vars4MCMC%ch4_h%existOrNot)then
-            call CalculateCost(vars4MCMC%ch4_h%mdData(:,4)*1000000, vars4MCMC%ch4_h%obsData(:,4)*1000000*300,&
+            call CalculateCost(vars4MCMC%ch4_h%mdData(:,4)*1000000, vars4MCMC%ch4_h%obsData(:,4)*1000000,&
                  vars4MCMC%ch4_h%obsData(:,5), J_cost)
-            J_new(13) = J_new(13) + J_cost*100
+            J_new(13) = J_new(13) + J_cost*10
         endif
 
         if(vars4MCMC%rh_y%existOrNot)then
@@ -759,28 +730,28 @@ module mcmc
         if(vars4MCMC%lai_shrub_d%existOrNot)then
             call CalculateCost(vars4MCMC%lai_shrub_d%mdData(:,4), vars4MCMC%lai_shrub_d%obsData(:,4),&
                  vars4MCMC%lai_shrub_d%obsData(:,5), J_cost)
-            J_new(17) = J_new(17) + J_cost*500
+            J_new(17) = J_new(17) + J_cost
         endif
 
         ! LAI_tree_d        
         if(vars4MCMC%lai_tree_d%existOrNot)then
             call CalculateCost(vars4MCMC%lai_tree_d%mdData(:,4), vars4MCMC%lai_tree_d%obsData(:,4),&
                  vars4MCMC%lai_tree_d%obsData(:,5), J_cost)
-            J_new(18) = J_new(18) + J_cost*500
+            J_new(18) = J_new(18) + J_cost
         endif
 
         ! photo_tree_h       
         if(vars4MCMC%photo_tree_h%existOrNot)then
             call CalculateCost(vars4MCMC%photo_tree_h%mdData(:,4), vars4MCMC%photo_tree_h%obsData(:,4),&
                  vars4MCMC%photo_tree_h%obsData(:,5), J_cost)
-            J_new(19) = J_new(19) + J_cost*100
+            J_new(19) = J_new(19) + J_cost
         endif
 
         ! photo_shrub_d        
         if(vars4MCMC%photo_shrub_d%existOrNot)then
             call CalculateCost(vars4MCMC%photo_shrub_d%mdData(:,4), vars4MCMC%photo_shrub_d%obsData(:,4),&
                  vars4MCMC%photo_shrub_d%obsData(:,5), J_cost)
-            J_new(20) = J_new(20) + 0!J_cost
+            J_new(20) = J_new(20) + J_cost
         endif
         ! =====================================================================================
 
@@ -893,7 +864,7 @@ module mcmc
         !     upgraded = upgraded + 1
         !     J_last = J_new
         ! endif
-        delta_J_new = (sum(J_new(1:15)) - sum(J_last(1:15)))!/15 * delta_scale!0.05
+        delta_J_new = (sum(J_new(1:15)) - sum(J_last(1:15)))/15 * 1000
         ! if(AMIN1(1.0, exp(-sum(delta_J))) .gt. cs_rand)then
         if(AMIN1(1.0, exp(-delta_J_new)) .gt. cs_rand)then
         ! if(AMIN1(1.0, exp(-sum(delta_J(1:2)))) .gt. cs_rand)then

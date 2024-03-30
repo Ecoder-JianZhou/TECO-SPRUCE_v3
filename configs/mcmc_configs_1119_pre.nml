@@ -1,43 +1,46 @@
 &nml_mcmc_settings
-nDAsimu = 50000
-search_scale = 0.02
-ncov = 50000
-nRand = 5
-do_mc_out_hr = False
-do_mc_out_day = True
-do_mc_out_mon = False
-do_mc_out_yr = False
+    nDAsimu        = 500                ! how many time to do data assimilation
+    search_scale   = 0.02              ! modify the scale of searching the new parameters
+    ncov           = 20000                ! how many times of upgraded that change to use coveriance to create new parameters
+    nRand          = 5
+    do_mc_out_hr   = False
+    do_mc_out_day  = True
+    do_mc_out_mon  = False
+    do_mc_out_yr   = False
 /
+
 &nml_obsfiles
-obsfile_ANPP_Shrub_y = "observation_files/obsfile_anpp_shrub_y.txt"
-obsfile_ANPP_Tree_y = "observation_files/obsfile_anpp_tree_y.txt"
-obsfile_NPP_sphag_y = "observation_files/obsfile_npp_shag_y.txt"
-obsfile_BNPP_y = "observation_files/obsfile_bnpp_y.txt"
-obsfile_er_d = "observation_files/obsfile_er_d.txt"
-obsfile_er_h = "observation_files/obsfile_er_h.txt"
-obsfile_gpp_d = "observation_files/obsfile_gpp_h.txt"
-obsfile_nee_d = "observation_files/obsfile_nee_d.txt"
-obsfile_nee_h = "observation_files/obsfile_nee_h.txt"
-obsfile_LAI_d = "observation_files/obsfile_LAI_d.txt"
-obsfile_rh_y = "observation_files/obsfile_rh_y.txt"
-obsfile_leaf_mass_shrub_y = "observation_files/obsfile_leaf_mass_shrub_y.txt"
-obsfile_stem_mass_shrub_y = "observation_files/obsfile_stem_mass_shrub_y.txt"
-obsfile_cPlant_tree_y = "observation_files/obsfile_Tree_PlantC_y.txt"
-obsfile_cPlant_sphag_y = "observation_files/obsfile_cPlant_sphag_y.txt"
-obsfile_cSoil_y = "observation_files/obsfile_soil_C_y.txt"
-obsfile_leaf_resp_shrub_d = "observation_files/obsfile_leaf_resp_shrub_d.txt"
-obsfile_leaf_resp_tree_d = "observation_files/obsfile_leaf_resp_tree_d.txt"
-obsfile_ch4_d = "observation_files/obsfile_ch4_d.txt"
-obsfile_ch4_h = "observation_files/obsfile_ch4_h.txt"
-obsfile_ch4_y = "observation_files/obsfile_ch4_y.txt"
-obsfile_CN_shag_d = "observation_files/obsfile_CN_shag_d.txt"
-obsfile_photo_shrub_d = "observation_files/obsfile_photo_shrub_d.txt"
-obsfile_photo_tree_d = "observation_files/obsfile_photo_tree_d.txt"
-obsfile_watertable_h = "observation_files/obsfile_watertable_h.txt"
-obsfile_LAI_tree_d = "observation_files/obsfile_LAI_tree_d.txt"
-obsfile_LAI_shrub_d = "observation_files/obsfile_LAI_shrub_d.txt"
-obsfile_photo_tree_h = "observation_files/obsfile_photo_tree_h.txt"
-/
+    obsfile_ANPP_Shrub_y = "observation_files/obsfile_anpp_shrub_y.txt"
+    obsfile_ANPP_Tree_y  = "observation_files/obsfile_anpp_tree_y.txt"
+    obsfile_NPP_sphag_y  = "observation_files/obsfile_npp_shag_y.txt"
+    obsfile_BNPP_y       = "observation_files/obsfile_bnpp_y.txt"        ! tree  + Shrub
+    obsfile_er_d         = "observation_files/obsfile_er_d.txt"          ! Shrub + sphag.
+    obsfile_er_h         = "observation_files/obsfile_er_h.txt"          ! Shrub + sphag.
+    obsfile_gpp_d        = "observation_files/obsfile_gpp_d.txt"         ! Shrub + sphag.
+    obsfile_nee_d        = "observation_files/obsfile_nee_d.txt"         ! Shrub + sphag.
+    obsfile_nee_h        = "observation_files/obsfile_nee_h.txt"
+    obsfile_LAI_d        = "observation_files/obsfile_LAI_d.txt"         ! tree  + Shrub
+    obsfile_rh_y         = "observation_files/obsfile_rh_y.txt"
+    !
+    obsfile_leaf_mass_shrub_y = "observation_files/obsfile_Leaf Mass_C_shrub_y.txt"
+    obsfile_stem_mass_shrub_y = "observation_files/obsfile_Stem Mass_C_shrub_y.txt"
+    obsfile_cPlant_tree_y     = "observation_files/obsfile_Tree_PlantC_y.txt"
+    obsfile_cPlant_sphag_y    = "observation_files/obsfile_cPlant_sphag_y.txt"
+    obsfile_cSoil_y           = "observation_files/obsfile_soil_C_y.txt"
+    obsfile_leaf_resp_shrub_d = "observation_files/obsfile_leaf_resp_shrub_d.txt"
+    obsfile_leaf_resp_tree_d  = "observation_files/obsfile_leaf_resp_tree_d.txt"
+    ! methane
+    obsfile_ch4_d        = "observation_files/obsfile_ch4_d.txt"
+    obsfile_ch4_h        = "observation_files/obsfile_ch4_h.txt"
+    obsfile_ch4_y        = "observation_files/obsfile_ch4_y.txt"
+    ! 
+    obsfile_CN_shag_d     = "observation_files/obsfile_CN_shag_d.txt"
+    obsfile_photo_shrub_d = "observation_files/obsfile_photo_shrub_d.txt"
+    obsfile_photo_tree_d  = "observation_files/obsfile_photo_tree_d.txt"
+    !
+    obsfile_watertable_h  = "observation_files/obsfile_watertable_h.txt"
+/	
+
 
 &nml_site_params	
     ! site-based: def-value, min-value, max-value  
@@ -220,7 +223,7 @@ obsfile_photo_tree_h = "observation_files/obsfile_photo_tree_h.txt"
     max_fn2r      = 0.45,   0.45,   0.35
 
     ! s_cLeaf, s_cStem,   s_cRoot,  s_nsc
-    def_s_cLeaf   = 1.4,     0.5,     1.15
+    def_s_cLeaf   = 1.4,     1.1,     1.15
     min_s_cLeaf   = 0.1,    0.1,    0.1
     max_s_cLeaf   = 10,     10,     10
 
