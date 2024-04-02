@@ -1427,7 +1427,7 @@ module mcmc_mod
         ! vars4MCMC%
         mc_iyear = get_iyear
         mc_iday  = get_iday
-        mc_ihour = get_ihour + 1
+        mc_ihour = get_ihour !+ 1
 
         ! ------------------------------- with weight ---------------------------------------------------------------
         ! call GetSimuData_var(vars4MCMC%ANPP_Shrub_y,(outVars_y%sp(2)%nppLeaf + outVars_y%sp(2)%nppStem)*24*365)
